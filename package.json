@@ -1,0 +1,50 @@
+{
+  "name": "react-native-keyboard-text-input",
+  "version": "0.1.0",
+  "description": "React native keyboard textinput component",
+  "main": "src/KeyboardTextInput.js",
+  "repository": {
+    "url": "git+ssh://git@github.com/batu4404/react-native-keyboard-text-input.git",
+    "type": "git"
+  },
+  "keywords": [
+    "react-native",
+    "react-component",
+    "textinput",
+    "keyboard"
+  ],
+  "files": [
+    "src/*.js"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "jest": "node node_modules/jest/bin/jest.js",
+    "jest:watch": "npm run jest -- --watchAll",
+    "test": "npm run jest"
+  },
+  "jest": {
+    "preset": "jest-react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/"
+    ]
+  },
+  "dependencies": {
+    "prop-types": "^15.6.0"
+  },
+  "devDependencies": {
+    "jest": "^22.0.4",
+    "jest-react-native": "^18.0.0",
+    "react": "16.0.0",
+    "react-native": "0.50.3",
+    "react-native-scripts": "1.8.1",
+    "react-test-renderer": "16.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/batu4404/react-native-keyboard-text-input/issues"
+  },
+  "homepage": "https://github.com/batu4404/react-native-keyboard-text-input#readme",
+  "directories": {
+    "example": "example"
+  },
+  "author": "batu4404"
+}
