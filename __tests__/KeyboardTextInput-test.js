@@ -1,5 +1,5 @@
 import React from 'react';
-import KeyboardTextInput from './src/KeyboardTextInput';
+import KeyboardTextInput from '../src/KeyboardTextInput';
 
 import renderer from 'react-test-renderer';
 
