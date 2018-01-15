@@ -1,52 +1,97 @@
-import React from "react";
-import { StyleSheet, Text, View, TextInput, Keyboard, Alert } from "react-native";
-import KeyboardTextInputPrompt from 'react-native-keyboard-text-input';
+import React, { Component } from 'react';
+import { Text, View, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, Alert } from 'react-native';
+import KeyboardTextInput from 'KeyboardTextInput';
 
-export default class App extends React.Component {
+export default class App extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            name: 'Cavoi',
-            phone: '0123456789',
-            desciption: 'I am a human',
+            visibleInputPrompt: false,
+            visibleInputText: false,
+            inputValue: 'a',
+            placeholder: 'Enter your name'
         }
+
+        this.registerKeyboardEvent();
+    }
+
+    registerKeyboardEvent = () => {
+        // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    unregisterKeyboardEvent = () => {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
+    
+    _keyboardDidShow = (e) => {
+        console.log('keyboard shown')
+    }
+
+    _keyboardDidHide = (e) => {
+        console.log('keyboard hiden');
+        this.setState({visibleInputPrompt: false});
+    }
+
+
+    onFocus = () => {
+        this.setState({
+            visibleInputPrompt: true,
+        })
+    } 
+
+
+    onClose = () => {
+        console.log('close');
+        this.setState({
+            visibleInputPrompt: false,
+        })
     }
 
     onEndEditing = () => {
-        Alert.alert('Hello ' + this.state.name);
+        if (this.state.inputValue) {
+            // console.log('1')
+            Alert.alert(`Hello ${this.state.inputValue}`);
+        }
+    }
+
+    onChangeText = (text) => {
+        this.setState({inputValue: text});
     }
 
     render() {
-        return (
-            <View
-                style={styles.container}
-            > 
-                <KeyboardTextInputPrompt 
+        return(
+            <View style={styles.container}>
+                <TextInput 
+                    placeholder={this.state.placeholder}
                     style={styles.input}
-                    value={this.state.name}
-                    placeholder={"Enter your name"}
-                    onChangeText={(text) => this.setState({name: text})}
+                    onFocus={() => this.onFocus()}
+                    value={this.state.inputValue}
+                    keyboardType='numeric'
+                    underlineColorAndroid='transparent'
+                />
+
+                <TextInput 
+                    placeholder={this.state.placeholder}
+                    style={styles.input}
+                    onFocus={() => {this.setState({visibleInputText: true})}}
+                    value={this.state.inputValue}
+                    // keyboardType='numeric'
+                    underlineColorAndroid='transparent'
+                    onChangeText={() => console.log('hello world')}
+                />
+                
+                <KeyboardTextInput
+                    value={this.state.inputValue}
+                    visible={this.state.visibleInputText}
+                    placeholder={this.state.placeholder}
+                    onClose={() => {console.log('close'); this.setState({visibleInputText: false})}}
                     onEndEditing={this.onEndEditing}
+                    onChangeText={this.onChangeText}
                 />
-
-                <KeyboardTextInputPrompt 
-                    style={styles.input}
-                    value={this.state.phone}
-                    keyboardType={"numeric"}
-                    placeholder={"Enter your phone"}
-                    onChangeText={(text) => this.setState({phone: text})}
-                />
-
-                <KeyboardTextInputPrompt 
-                    style={styles.input}
-                    value={this.state.desciption}
-                    multiline={true}
-                    placeholder={"Describe yourself"}
-                    onChangeText={(text) => this.setState({desciption: text})}
-                />
-
             </View>
         )
     }
@@ -55,15 +100,13 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ddd",
-        alignItems: "center",
-        justifyContent: "center"
+        flexDirection: 'column',
+        padding: 50,
+        backgroundColor: 'skyblue',
     },
     input: {
-        margin: 10,
-        width: 200,
+        height: 40,
         backgroundColor: 'white',
-        paddingLeft: 15,
-        paddingRight: 15,
+        marginTop: 15,
     }
-});
+})

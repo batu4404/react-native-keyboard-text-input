@@ -15,6 +15,8 @@ import PropsType from 'prop-types';
 import { setTimeout } from 'core-js/library/web/timers';
 import { getPropsWithoutFunction } from './utils';
 
+let id = 1;
+
 export default class KeyboardTextInput extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +27,14 @@ export default class KeyboardTextInput extends Component {
             value: this.props.value,
             modalVisible: false,
             propsWithoutFunction,
+            id: id++,
         }
+    }
+
+    componentWillMount() {
+        console.log('will mount');
+        this.unregisterKeyboardEvent();
+        this.registerKeyboardEvent();
     }
 
     componentWillReceiveProps (nextProps) {
@@ -35,26 +44,33 @@ export default class KeyboardTextInput extends Component {
         this.setState({value, propsWithoutFunction});
     }
 
-    componentDidUpdate(nextProps, nextState) {
-        if (nextState.modalVisible) {
-            this.registerKeyboardEvent();
-        }
+    componentWillUpdate(nextProps, nextState) {
+        // if (nextState.modalVisible) {
+        //     console.log('update');
+        //     this.registerKeyboardEvent();
+        // }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('nextState.modalVisible', nextState.modalVisible);
+        return true;
     }
 
     registerKeyboardEvent = () => {
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+        console.log('register keyboard', this.state.id);
+        Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+        // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     }
 
     unregisterKeyboardEvent = () => {
-        this.keyboardDidHideListener.remove();
+        Keyboard.removeListener('keyboardDidHide', this._keyboardDidHide);
+        // this.keyboardDidHideListener.remove();
     }
     
     _keyboardDidHide = (e) => {
+        console.log('keyboard did hide', this.state.id);
         if (this.state.modalVisible) {
-            // to fix "trying to add local data to unkown tag ..." (haven't known reason)
-            setTimeout(() => {
-                this.onEndEditing();
-            }, 20);
+            this.onEndEditing();
         }
     }
 
@@ -67,10 +83,21 @@ export default class KeyboardTextInput extends Component {
     }
 
     onEndEditing = () => {
-        this.unregisterKeyboardEvent();
-        this.setState({modalVisible: false});
+        console.log('end editing');
+        // this.unregisterKeyboardEvent();
+        this.setState({modalVisible: false}, () => {
+            console.log('modal visible', this.state.modalVisible);
+            // this.unregisterKeyboardEvent();
+            this.props.onEndEditing();
+        });
 
-        this.props.onEndEditing(this.state.value);
+        setTimeout(() => {
+            this.setState({modalVisible: false}, () => {
+                console.log('modal visible', this.state.modalVisible);
+                // this.unregisterKeyboardEvent();
+                this.props.onEndEditing();
+            });
+        }, 100);
     }
 
     onChangeText = (text) => {
@@ -78,6 +105,9 @@ export default class KeyboardTextInput extends Component {
             value: text,
         });
         this.props.onChangeText(text);
+    }
+
+    onRequestClose = () => {
     }
 
     handleTouchOnSpace = () => {
@@ -92,9 +122,12 @@ export default class KeyboardTextInput extends Component {
             ...restProps
         } = this.state.propsWithoutFunction;
 
+        console.log('modal', this.state.id);
+        console.log(`modal visible ${this.state.id} - ${this.state.modalVisible}`);
+
         return (
             <Modal
-                onRequestClose={() => {this.props.onClose()}}
+                onRequestClose={this.onRequestClose}
                 visible={this.state.modalVisible}
                 transparent={true}
                 animationType='slide'
@@ -108,9 +141,10 @@ export default class KeyboardTextInput extends Component {
 
                     <View>
                         <TextInput
+                            ref={(ref) => this._textInput = ref}
                             placeholder={this.props.placeholder}
                             style={[styles.keyboardInput, this.props.inputStyle]}
-                            onFocus={this.onFocus}
+                            // onFocus={this.onFocus}
                             value={this.state.value}
                             autoFocus={this.state.modalVisible}
                             onEndEditing={this.onEndEditing}
@@ -129,19 +163,22 @@ export default class KeyboardTextInput extends Component {
             style,
             value,
             editable,
+            textStyle,
             ...restProps
         } = this.state.propsWithoutFunction;
 
+        console.log('render', this.state.id);
+
         return (
-            <View>
+            <View
+                style={[editable ? styles.editable : styles.readOnly, style]}
+            >
                 {this.renderModal()}
 
                 <TextInput 
                     value={this.state.value}
-                    style={[this.props.style, editable ? styles.editable : styles.readOnly, style]}
-                    numberOfLines={1}
+                    style={[textStyle, {flex: 1}]}
                     placeholder={this.props.placeholder}
-                    underlineColorAndroid='transparent'
                     editable={false}
                     {...restProps}
                 />
