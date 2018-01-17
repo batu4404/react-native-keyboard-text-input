@@ -8,52 +8,28 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            visibleInputPrompt: false,
             visibleInputText: false,
             inputValue: 'a',
             placeholder: 'Enter your name'
         }
-
-        this.registerKeyboardEvent();
-    }
-
-    registerKeyboardEvent = () => {
-        // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-        // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-    }
-
-    unregisterKeyboardEvent = () => {
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
-    }
-    
-    _keyboardDidShow = (e) => {
-        console.log('keyboard shown')
-    }
-
-    _keyboardDidHide = (e) => {
-        console.log('keyboard hiden');
-        this.setState({visibleInputPrompt: false});
     }
 
 
     onFocus = () => {
         this.setState({
-            visibleInputPrompt: true,
+            visibleInputText: true,
         })
     } 
 
 
     onClose = () => {
-        console.log('close');
         this.setState({
-            visibleInputPrompt: false,
+            visibleInputText: false,
         })
     }
 
     onEndEditing = () => {
         if (this.state.inputValue) {
-            // console.log('1')
             Alert.alert(`Hello ${this.state.inputValue}`);
         }
     }
@@ -68,29 +44,21 @@ export default class App extends Component {
                 <TextInput 
                     placeholder={this.state.placeholder}
                     style={styles.input}
-                    onFocus={() => this.onFocus()}
-                    value={this.state.inputValue}
-                    keyboardType='numeric'
-                    underlineColorAndroid='transparent'
-                />
-
-                <TextInput 
-                    placeholder={this.state.placeholder}
-                    style={styles.input}
                     onFocus={() => {this.setState({visibleInputText: true})}}
                     value={this.state.inputValue}
                     // keyboardType='numeric'
                     underlineColorAndroid='transparent'
-                    onChangeText={() => console.log('hello world')}
+                    onChangeText={this.onChangeText}
                 />
                 
                 <KeyboardTextInput
                     value={this.state.inputValue}
                     visible={this.state.visibleInputText}
                     placeholder={this.state.placeholder}
-                    onClose={() => {console.log('close'); this.setState({visibleInputText: false})}}
+                    onClose={this.onClose}
                     onEndEditing={this.onEndEditing}
                     onChangeText={this.onChangeText}
+                    onFocus={this.onFocus}
                 />
             </View>
         )
