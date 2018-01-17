@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, TextInput, KeyboardAvoidingView, Keyboard, Alert } from 'react-native';
-import KeyboardTextInput from 'KeyboardTextInput';
+import KeyboardTextInput from 'react-native-keyboard-text-input';
 
 export default class App extends Component {
 

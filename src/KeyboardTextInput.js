@@ -105,7 +105,6 @@ export default class KeyboardTextInput extends Component {
 
     keyboardHideListener = (e) => {
         if (this.props.visible && !this.state.closed && !this.state.animating) {
-            console.log(1);
             let onClose = this.props.onClose;
             if (this.props.animate) {
                 this.startSlideHide(() => {

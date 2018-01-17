@@ -4554,9 +4554,9 @@ react-native-gesture-handler@1.0.0-alpha.30:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-keyboard-text-input@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-text-input/-/react-native-keyboard-text-input-0.1.0.tgz#4f645bcff2a93adbcf2ed9b8cafbb37ccbf9fe82"
+react-native-keyboard-text-input@*:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-text-input/-/react-native-keyboard-text-input-0.1.3.tgz#6dcbbe3c43be4d64374feb8a180e072f7788d020"
   dependencies:
     prop-types "^15.6.0"
 
