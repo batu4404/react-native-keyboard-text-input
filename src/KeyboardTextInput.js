@@ -89,7 +89,7 @@ export default class KeyboardTextInput extends Component {
     measureFooterHeight(keyboardHeight) {
         if (this._containerRef) {
             this._containerRef.measure((frameOffsetX, frameOffsetY, width, height, pageOffsetX, pageOffsetY) => {
-                let footerHeight = height - WINDOW_HEIGHT + keyboardHeight;
+                let footerHeight = height + pageOffsetY - WINDOW_HEIGHT + keyboardHeight;
                 this.setState({height, footerHeight});
             });
         }
@@ -187,13 +187,14 @@ export default class KeyboardTextInput extends Component {
                     style={styles.input}
                     autoFocus={this.props.visible}
                     placeholder={this.props.placeholder}
+                    maxLength={this.props.maxLength}
                     ref={(ref) => this.keyboardTextInputRef = ref}
                     onChangeText={this.onChangeText}
                     onEndEditing={this.props.onEndEditing ? this.onEndEditing : null}
                     onSubmitEditing={this.props.onSubmitEditing ? this.onSubmitEditing : null}
                     underlineColorAndroid='transparent'
                 />
-                
+            
                 <View style={[{height: this.state.footerHeight}]} />
             </View>
         );
@@ -230,6 +231,7 @@ KeyboardTextInput.propTypes = {
     accessibilityLabel: PropsType.string,
     value: PropsType.string,
     keyboardType: PropsType.string,
+    maxLength: PropsType.number,
     visible: PropsType.bool,
     animate: PropsType.bool,
     onChangeText: PropsType.func,
@@ -242,6 +244,7 @@ KeyboardTextInput.defaultProps = {
     accessibilityLabel: 'keyboard-text-input',
     value: '',
     keyboardType: 'default',
+    maxLength: null,
     visible: false,
     animate: false,
     onChangeText: () => null,
