@@ -15,8 +15,8 @@ import {
 } from 'react-native';
 import PropsType from 'prop-types';
 
-const SLIDE_SHOW_DURATION = 200;
-const SLIDE_HIDE_DURATION = 200;
+const SLIDE_SHOW_DURATION = 250;
+const SLIDE_HIDE_DURATION = 250;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 export default class KeyboardTextInput extends Component {
@@ -106,10 +106,10 @@ export default class KeyboardTextInput extends Component {
   }
 
   keyboardShowListener = e => {
-    if (this.keyboardTextInputRef && this.props.visible) {
-      this.measureFooterHeight(e.endCoordinates.height);
-      // this.keyboardTextInputRef.focus();
-    }
+    // if (this.keyboardTextInputRef && this.props.visible) {
+    //   this.measureFooterHeight(e.endCoordinates.height);
+    // // this.keyboardTextInputRef.focus();
+    // }
   };
 
   keyboardHideListener = e => {
@@ -187,25 +187,25 @@ export default class KeyboardTextInput extends Component {
         <TouchableWithoutFeedback onPress={this.handleTouchOnSpace}>
           <View style={styles.flexOne} />
         </TouchableWithoutFeedback>
-
-        <TextInput
-          accessibilityLabel={this.props.accessibilityLabel}
-          value={this.state.value}
-          keyboardType={this.props.keyboardType}
-          style={[styles.input, this.props.textInputStyle]}
-          autoFocus={this.props.visible}
-          placeholder={this.props.placeholder}
-          maxLength={this.props.maxLength}
-          ref={ref => (this.keyboardTextInputRef = ref)}
-          onChangeText={this.onChangeText}
-          onEndEditing={this.props.onEndEditing ? this.onEndEditing : null}
-          onSubmitEditing={
-            this.props.onSubmitEditing ? this.onSubmitEditing : null
-          }
-          underlineColorAndroid="transparent"
-        />
-
-        <View style={[{ height: this.state.footerHeight }]} />
+        <KeyboardAvoidingView behavior={'padding'}>
+          <TextInput
+            accessibilityLabel={this.props.accessibilityLabel}
+            value={this.state.value}
+            keyboardType={this.props.keyboardType}
+            style={[styles.input, this.props.textInputStyle]}
+            autoFocus={this.props.visible}
+            placeholder={this.props.placeholder}
+            maxLength={this.props.maxLength}
+            ref={ref => (this.keyboardTextInputRef = ref)}
+            onChangeText={this.onChangeText}
+            onEndEditing={this.props.onEndEditing ? this.onEndEditing : null}
+            onSubmitEditing={
+              this.props.onSubmitEditing ? this.onSubmitEditing : null
+            }
+            underlineColorAndroid="transparent"
+          />
+        </KeyboardAvoidingView>
+        {/* <View style={[{ height: this.state.footerHeight }]} /> */}
       </View>
     );
   }
