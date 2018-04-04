@@ -106,10 +106,10 @@ export default class KeyboardTextInput extends Component {
   }
 
   keyboardShowListener = e => {
-    // if (this.keyboardTextInputRef && this.props.visible) {
-    //   this.measureFooterHeight(e.endCoordinates.height);
-    // // this.keyboardTextInputRef.focus();
-    // }
+    if (this.keyboardTextInputRef && this.props.visible) {
+      // this.measureFooterHeight(e.endCoordinates.height);
+      this.keyboardTextInputRef.focus();
+    }
   };
 
   keyboardHideListener = e => {
