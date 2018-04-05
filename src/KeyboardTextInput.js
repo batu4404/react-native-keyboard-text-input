@@ -107,7 +107,7 @@ export default class KeyboardTextInput extends Component {
 
   keyboardShowListener = e => {
     if (this.keyboardTextInputRef && this.props.visible) {
-      // this.measureFooterHeight(e.endCoordinates.height);
+      this.measureFooterHeight(e.endCoordinates.height);
       this.keyboardTextInputRef.focus();
     }
   };
@@ -205,7 +205,7 @@ export default class KeyboardTextInput extends Component {
             underlineColorAndroid="transparent"
           />
         </KeyboardAvoidingView>
-        {/* <View style={[{ height: this.state.footerHeight }]} /> */}
+        <View style={[{ height: this.state.footerHeight }]} />
       </View>
     );
   }
