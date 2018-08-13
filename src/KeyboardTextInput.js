@@ -177,6 +177,17 @@ export default class KeyboardTextInput extends Component {
   };
 
   renderContent() {
+    const {
+      visible,
+      animate,
+      onChangeText,
+      onEndEditing,
+      onSubmitEditing,
+      onClose,
+      textInputStyle,
+      ...restProps
+    } = this.props;
+
     return (
       <View
         style={styles.content}
@@ -189,13 +200,10 @@ export default class KeyboardTextInput extends Component {
         </TouchableWithoutFeedback>
         {/* <KeyboardAvoidingView behavior={'padding'}> */}
         <TextInput
-          accessibilityLabel={this.props.accessibilityLabel}
+          {...restProps}
           value={this.state.value}
-          keyboardType={this.props.keyboardType}
           style={[styles.input, this.props.textInputStyle]}
           autoFocus={this.props.visible}
-          placeholder={this.props.placeholder}
-          maxLength={this.props.maxLength}
           ref={ref => (this.keyboardTextInputRef = ref)}
           onChangeText={this.onChangeText}
           onEndEditing={this.props.onEndEditing ? this.onEndEditing : null}
