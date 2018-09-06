@@ -107,7 +107,9 @@ export default class KeyboardTextInput extends Component {
 
   keyboardShowListener = e => {
     if (this.keyboardTextInputRef && this.props.visible) {
-      this.measureFooterHeight(e.endCoordinates.height);
+      if (!this.props.inModal || Platform.OS === 'ios') {
+        this.measureFooterHeight(e.endCoordinates.height);
+      }
       this.keyboardTextInputRef.focus();
     }
   };
@@ -127,7 +129,10 @@ export default class KeyboardTextInput extends Component {
 
   close(onClose) {
     if (!this.state.closed) {
-      this.setState({ closed: true, footerHeight: this.footerHeight - 20 });
+      this.setState({
+        closed: true
+        // footerHeight: this.state.footerHeight - 20
+      });
       if (onClose) {
         onClose();
       } else {
